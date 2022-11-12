@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Terragrunt cache directory
+.terragrunt-cache
