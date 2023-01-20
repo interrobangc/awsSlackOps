@@ -1,1 +1,5 @@
 # awsSlackOps
+
+## Local Developent
+
+### Requirements

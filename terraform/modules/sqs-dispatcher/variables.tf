@@ -3,16 +3,6 @@ variable "env" {
   type        = string
 }
 
-variable "name" {
-  description = "Name"
-  type        = string
-}
-
-variable "slack_bot_lambda_arn" {
-  description = "Slack bot lambda ARN"
-  type        = string
-}
-
 variable "signing_secret" {
   description = "Slack signing secret"
   type        = string
@@ -31,7 +21,8 @@ variable "aws_endpoint" {
   default     = ""
 }
 
-variable "queue_url" {
-  description = "SQS queue URL"
-  type        = string
+variable "additional_policy" {
+  description = "Any additional permissions required by the lambda processor function to do its work, beyond talking to the contact jobs SQS queues"
+  type = string
+  default = null
 }

@@ -22,6 +22,16 @@ module "lambda" {
   aws_endpoint   = var.aws_endpoint
 }
 
+module "sqs_dispatcher" {
+  source = "../sqs-dispatcher"
+
+  env  = var.env
+
+  signing_secret       = local.signing_secret
+  bot_token            = local.bot_token
+  aws_endpoint         = var.aws_endpoint
+}
+
 module "event_lambdas" {
   for_each = {for e in local.events: e.name => e}
 
@@ -34,4 +44,5 @@ module "event_lambdas" {
   signing_secret       = local.signing_secret
   bot_token            = local.bot_token
   aws_endpoint         = var.aws_endpoint
+  queue_url            = module.sqs_dispatcher.queue_url
 }

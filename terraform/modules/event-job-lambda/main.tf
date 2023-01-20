@@ -36,6 +36,7 @@ module "lambda" {
     AWS_ENDPOINT         = var.aws_endpoint
     SLACK_BOT_TOKEN      = var.bot_token
     SLACK_SIGNING_SECRET = var.signing_secret
+    SQS_QUEUE_URL        = var.queue_url
   }
 
   allowed_triggers = {

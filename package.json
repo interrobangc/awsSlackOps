@@ -32,6 +32,7 @@
     "lint": "eslint --ext ts .",
     "lint:fix": "npm run lint -- --fix",
     "localstack:apply:ssm": "cd terraform/environments/local/ssm && terragrunt apply -auto-approve",
+    "localstack:plan": "cd terraform/environments/local && terragrunt plan",
     "localstack:apply": "cd terraform/environments/local && terragrunt apply -auto-approve",
     "localstack:init": "cd terraform/environments/local && terragrunt init",
     "localstack:destroy": "cd terraform/environments/local && terragrunt destroy",
