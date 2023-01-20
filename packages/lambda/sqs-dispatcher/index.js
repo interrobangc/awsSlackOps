@@ -12,18 +12,21 @@ const processRecord = async sqsRecord => {
   console.log('doing stuff!');
   console.dir(message);
 
-  // if (!message.executeAt <= Date.now()) {
-  //   // handle send message back to queue
-  //   return;
-  // }
+  const now = new Date().getTime();
 
-  // return lambda
-  //   .invoke({
-  //     FunctionName: message.lambdaName,
-  //     InvocationType: 'Event',
-  //     Payload: JSON.stringify(message.payload),
-  //   })
-  //   .promise();
+  if (message.executeAt >= now) {
+    console.log('message is not ready to be processed yet');
+    console.log(`${message.executeAt} <= ${now}`);
+    return setTimeout(() => processRecord(sqsRecord), 1000 * 5);
+  }
+
+  return lambda
+    .invoke({
+      FunctionName: message.lambdaName,
+      InvocationType: 'Event',
+      Payload: JSON.stringify(message),
+    })
+    .promise();
 };
 
 module.exports.handler = async event => {

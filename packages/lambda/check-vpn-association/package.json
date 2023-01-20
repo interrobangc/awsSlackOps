@@ -1,0 +1,14 @@
+{
+  "name": "@interrobangc/lambda-slack-bot-check-vpn-association",
+  "version": "0.0.1",
+  "description": "Lambda Slackbot check-vpn-association",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.1225.0",
+    "@slack/bolt": "^3.6.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

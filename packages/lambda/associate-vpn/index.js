@@ -9,12 +9,9 @@ const sqs = new SQS();
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   receiver: {
-    init: () => {},
-  }, // no receiver
+    init: () => {}, // no receiver
+  },
 });
-
-// const lambdaConfig = process.env.AWS_ENDPOINT ? { endpoint: process.env.AWS_ENDPOINT } : {};
-// const lambda = new Lambda(lambdaConfig);
 
 module.exports.handler = async ({ body }) => {
   const env = body.state.values.env_select_input.env_select.selected_option?.value;
@@ -44,7 +41,7 @@ module.exports.handler = async ({ body }) => {
   if (env && nets.length) {
     text = `<@${userId}> I'm associating the ${nets.join(', ')} network${
       nets.length > 1 ? 's' : ''
-    } with the ${env} VPN for you! I'll let you know when it is associated`;
+    } with the ${env} VPN for you! I'll let you know when it is associated.`;
 
     await app.client.chat.postMessage({
       channel,
@@ -54,9 +51,9 @@ module.exports.handler = async ({ body }) => {
 
     const message = {
       executeAt: Date.now(),
-      lambdaName: 'check-vpn-association',
+      lambdaName: `${process.env.NODE_ENV}-slack-bot-check-vpn-association`,
       payload: {
-        originalBod: body,
+        body,
       },
     };
 

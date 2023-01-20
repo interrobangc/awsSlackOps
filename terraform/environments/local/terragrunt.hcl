@@ -53,6 +53,4 @@ EOF
 inputs = {
   env = "local"
   aws_endpoint = "http://localstack:4566"
-  // bot_token = run_cmd("aws", "--region=eu-west-1", "--endpoint=http://localhost:4566", "ssm", "get-parameter", "--name=/local/slack-bot/bot-token", "--with-decryption", "--query=\"Parameter.Value\"", "--output=text")
-  // signing_secret = run_cmd("aws", "--region=eu-west-1", "--endpoint=http://localhost:4566", "ssm", "get-parameter", "--name=/local/slack-bot/signing-secret", "--with-decryption", "--query=\"Parameter.Value\"", "--output=text")
 }

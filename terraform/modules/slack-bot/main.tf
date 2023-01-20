@@ -7,7 +7,7 @@ data "aws_ssm_parameter" "bot_token" {
 }
 
 locals {
-  events = [{name = "associate-vpn"}]
+  events = [{name = "associate-vpn"}, {name = "check-vpn-association"}]
   signing_secret = data.aws_ssm_parameter.signing_secret.value
   bot_token = data.aws_ssm_parameter.bot_token.value
 }
