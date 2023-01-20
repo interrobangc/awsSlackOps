@@ -1,0 +1,13 @@
+{
+  "name": "@interrobangc/lambda-slack-bot-dispatcher",
+  "version": "0.0.1",
+  "description": "Lambda Slackbot dispatcher",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.1225.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

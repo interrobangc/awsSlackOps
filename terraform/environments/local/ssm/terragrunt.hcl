@@ -1,6 +1,6 @@
 
 terraform {
-  source = "../../modules//slack-bot"
+  source = "../../../modules//ssm"
 }
 
 generate "provider" {

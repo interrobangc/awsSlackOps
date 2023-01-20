@@ -3,6 +3,11 @@ variable "env" {
   type        = string
 }
 
+variable "name" {
+  description = "Name"
+  type        = string
+}
+
 variable "aws_endpoint" {
   description = "AWS endpoint"
   type        = string
