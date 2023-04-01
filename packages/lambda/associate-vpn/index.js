@@ -22,7 +22,7 @@ const parseConfig = body => {
   return { env, nets, thread_ts, userId, channel };
 };
 
-const handleSuccess = async ({ env, nets, thread_ts, userId, channel }) => {
+const handleSuccess = async (body, { env, nets, thread_ts, userId, channel }) => {
   text = `<@${userId}> I'm associating the ${nets.join(', ')} network${
     nets.length > 1 ? 's' : ''
   } with the ${env} VPN for you! I'll let you know when it is associated.`;
@@ -55,14 +55,14 @@ const handleSuccess = async ({ env, nets, thread_ts, userId, channel }) => {
   console.log(`sent sqs message to ${queueUrl}`, message);
 };
 
-const associateNetwork = async ({ env, nets, thread_ts, userId, channel }) => {
+const associateNetwork = async (body, { env, nets, thread_ts, userId, channel }) => {
   if (!env || !nets.length) return;
 
   //TODO: Check to see if network is already associated and send message if it is.
 
   try {
     //TODO: associate the correct network to the VPN based on environment and network
-    await handleSuccess({ env, nets, thread_ts, userId, channel });
+    await handleSuccess(body, { env, nets, thread_ts, userId, channel });
   } catch (error) {
     console.error(error);
     await app.client.chat.postMessage({
@@ -95,7 +95,7 @@ module.exports.handler = async ({ body }) => {
     });
   }
 
-  await associateNetwork(config);
+  await associateNetwork(body, config);
 
   return { statusCode: 200 };
 };

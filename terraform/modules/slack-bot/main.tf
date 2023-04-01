@@ -7,9 +7,10 @@ data "aws_ssm_parameter" "bot_token" {
 }
 
 locals {
-  events = [{name = "associate-vpn"}, {name = "check-vpn-association"}]
+  config         = jsondecode(file("${var.repo_root}/config.${var.env}.yml"))
+  lambdas        = local.config.lambdas
   signing_secret = data.aws_ssm_parameter.signing_secret.value
-  bot_token = data.aws_ssm_parameter.bot_token.value
+  bot_token      = data.aws_ssm_parameter.bot_token.value
 }
 
 module "lambda" {
@@ -25,20 +26,20 @@ module "lambda" {
 module "sqs_dispatcher" {
   source = "../sqs-dispatcher"
 
-  env  = var.env
+  env = var.env
 
-  signing_secret       = local.signing_secret
-  bot_token            = local.bot_token
-  aws_endpoint         = var.aws_endpoint
+  signing_secret = local.signing_secret
+  bot_token      = local.bot_token
+  aws_endpoint   = var.aws_endpoint
 }
 
 module "event_lambdas" {
-  for_each = {for e in local.events: e.name => e}
+  for_each = toset(local.lambdas)
 
   source = "../event-job-lambda"
 
   env  = var.env
-  name = each.value.name
+  name = each.key
 
   slack_bot_lambda_arn = module.lambda.lambda_arn
   signing_secret       = local.signing_secret

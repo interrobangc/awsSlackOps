@@ -1,2 +1,3 @@
-include ../../makefiles/*.make
-include ../../makefiles/local/*.make
+REPO_ROOT = $(shell git rev-parse --show-toplevel)
+
+include $(REPO_ROOT)/terraform/makefiles/*.make

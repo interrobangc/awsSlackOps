@@ -1,0 +1,38 @@
+{
+  "messageHandlers": [
+    {
+      "name": "vpn",
+      "messageRegex": "vpn",
+      "inputs": {
+        "environment": {
+          "type": "static_select",
+          "options": ["development", "staging", "production"],
+          "lookupMap": {
+            "dev": "development",
+            "development": "development",
+            "prod": "production",
+            "production": "production",
+            "stage": "staging",
+            "staging": "staging"
+          }
+        },
+        "network": {
+          "type": "multi_static_select",
+          "options": ["private", "database"],
+          "lookupMap": {
+            "db": "database",
+            "database": "database",
+            "priv": "private",
+            "private": "private"
+          }
+        }
+      },
+      "action": {
+        "text": "Associate VPN",
+        "id": "vpn_associate",
+        "lambda": "associate-vpn"
+      }
+    }
+  ],
+  "lambdas": ["associate-vpn", "check-vpn-association"]
+}
