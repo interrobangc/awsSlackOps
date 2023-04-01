@@ -54,19 +54,21 @@ resource "aws_api_gateway_deployment" "this" {
 }
 
 module "lambda_slack_bot" {
-  source = "terraform-aws-modules/lambda/aws"
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "v4.12.1"
 
   function_name = "${var.env}-slack-bot"
   description   = "Base slack bot"
   handler       = "index.handler"
   runtime       = "nodejs16.x"
+  publish       = true
 
   use_existing_cloudwatch_log_group = false
   attach_cloudwatch_logs_policy     = false
 
   source_path = [
     {
-      path     = "../../../../../../../"
+      path = "../../../../../../../"
       commands = [
         "echo 'pwd'",
         "pwd",

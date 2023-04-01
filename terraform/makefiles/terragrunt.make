@@ -1,13 +1,15 @@
-apply: apply-main
+apply: apply-tg
 
-apply-main:
+init: init-tg
+
+apply-tg:
 	docker run -it --rm $(DEFAULT_ARGS) $(DOCKER_IMAGE):$(TF_VER) terragrunt apply $(tf_args)
 
-init:
+init-tg:
 	docker run -it --rm $(DEFAULT_ARGS) $(DOCKER_IMAGE):$(TF_VER) terragrunt init $(tf_args)
 
-plan:
+plan-tg:
 	docker run -it --rm $(DEFAULT_ARGS) $(DOCKER_IMAGE):$(TF_VER) terragrunt plan $(tf_args)
 
-destroy:
+destroy-tg:
 	docker run -it --rm $(DEFAULT_ARGS) $(DOCKER_IMAGE):$(TF_VER) terragrunt destroy $(tf_args)

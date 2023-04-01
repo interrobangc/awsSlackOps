@@ -1,21 +1,19 @@
-apply-terraform: apply-main
-
-apply-main-terraform:
+apply-tf:
 	docker run -it --rm $(DEFAULT_ARGS) $(DOCKER_IMAGE):$(TF_VER) terraform apply $(tf_args)
 
-get-terraform:
+get-tf:
 	docker run -it --rm $(DEFAULT_ARGS) $(DOCKER_IMAGE):$(TF_VER) terraform get --update $(tf_args)
 
-init-terraform:
+init-tf:
 	docker run -it --rm $(DEFAULT_ARGS) $(DOCKER_IMAGE):$(TF_VER) terraform init $(tf_args)
 
-plan-terraform:
+plan-tf:
 	docker run -it --rm $(DEFAULT_ARGS) $(DOCKER_IMAGE):$(TF_VER) terraform plan $(tf_args)
 
-destroy-terraform:
+destroy-tf:
 	docker run -it --rm $(DEFAULT_ARGS) $(DOCKER_IMAGE):$(TF_VER) terraform destroy $(tf_args)
 
-validate-terraform:
+validate-tf:
 	docker run -it --rm $(DEFAULT_ARGS) $(DOCKER_IMAGE):$(TF_VER) terraform validate $(tf_args)
 
 lint:

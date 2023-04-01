@@ -30,8 +30,8 @@ resource "aws_ssm_parameter" "queue_url" {
 data "aws_iam_policy_document" "allow_sqs_send" {
   version = "2012-10-17"
   statement {
-    effect = "Allow"
-    actions = ["sqs:SendMessage"]
+    effect    = "Allow"
+    actions   = ["sqs:SendMessage"]
     resources = [aws_sqs_queue.this.arn]
   }
 }
@@ -97,18 +97,20 @@ resource "aws_iam_policy" "queue_processor_sqs_policy" {
 # }
 
 module "lambda" {
-  source = "terraform-aws-modules/lambda/aws"
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "v4.12.1"
 
   function_name = "${var.env}-slack-bot-sqs-dispatcher"
   handler       = "index.handler"
   runtime       = "nodejs16.x"
+  publish       = true
 
   use_existing_cloudwatch_log_group = false
   attach_cloudwatch_logs_policy     = false
 
   source_path = [
     {
-      path     = "../../../../../../../"
+      path = "../../../../../../../"
       commands = [
         "echo 'pwd'",
         "pwd",

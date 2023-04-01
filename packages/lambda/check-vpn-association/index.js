@@ -18,6 +18,12 @@ module.exports.handler = async payload => {
   const thread_ts = payload.payload.body.message.thread_ts;
   const userId = payload.payload.body.user.id;
 
+  /**
+   * TODO:
+   *
+   * If the
+   */
+
   await app.client.chat.postMessage({
     channel,
     thread_ts,

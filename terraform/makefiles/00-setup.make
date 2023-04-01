@@ -1,6 +1,8 @@
 .PHONY: get init plan apply destroy
 .DEFAULT_GOAL := help
 
+TF_VER ?= 1.4.4
+
 DOCKER_IMAGE := interrobangc/terraform
 
 SECRETS = -e AWS_DEFAULT_REGION -e AWS_SECRET_ACCESS_KEY -e AWS_ACCESS_KEY_ID -v ~/.aws:/root/.aws -e GITHUB_OWNER -e GITHUB_TOKEN -e TF_VAR_github_token=${GITHUB_TOKEN}

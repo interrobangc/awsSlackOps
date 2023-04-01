@@ -17,6 +17,8 @@ const processRecord = async sqsRecord => {
   if (message.executeAt >= now) {
     console.log('message is not ready to be processed yet');
     console.log(`${message.executeAt} <= ${now}`);
+
+    // This will only work for a tasks less than a few minutes away. For anything else we'll need to send another message to the queue with `DelaySeconds` set appropriately.
     return setTimeout(() => processRecord(sqsRecord), 1000 * 5);
   }
 
