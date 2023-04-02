@@ -110,22 +110,9 @@ module "lambda" {
 
   source_path = [
     {
-      path = "../../../../../../../"
+      path = "${var.repo_root}/packages/lambdas/sqs-dispatcher"
       commands = [
-        "echo 'pwd'",
-        "pwd",
-        "rm -rf /tmp/lambda-slack-bot-sqs-dispatcher",
-        "mkdir /tmp/lambda-slack-bot-sqs-dispatcher",
-        "cp package.json /tmp/lambda-slack-bot-sqs-dispatcher",
-        "cp package-lock.json /tmp/lambda-slack-bot-sqs-dispatcher",
-        "cp -r packages /tmp/lambda-slack-bot-sqs-dispatcher",
-        "cd /tmp/lambda-slack-bot-sqs-dispatcher",
-        "npm install --omit=dev -w packages/lambda/sqs-dispatcher",
-        "rm -rf node_modules/@interrobangc",
-        "mkdir dist",
-        "cp -r packages/lambda/sqs-dispatcher/* dist",
-        "cp -R node_modules dist",
-        "cd dist",
+        "npm i --omit=dev",
         ":zip ."
       ]
     }

@@ -23,6 +23,11 @@ variable "aws_endpoint" {
 
 variable "additional_policy" {
   description = "Any additional permissions required by the lambda processor function to do its work, beyond talking to the contact jobs SQS queues"
-  type = string
-  default = null
+  type        = string
+  default     = null
+}
+
+variable "repo_root" {
+  description = "Root of the repository"
+  type        = string
 }

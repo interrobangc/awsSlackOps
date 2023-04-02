@@ -20,3 +20,8 @@ variable "aws_endpoint" {
   type        = string
   default     = ""
 }
+
+variable "repo_root" {
+  description = "Root of the repository"
+  type        = string
+}

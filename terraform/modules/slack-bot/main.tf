@@ -7,7 +7,7 @@ data "aws_ssm_parameter" "bot_token" {
 }
 
 locals {
-  config         = jsondecode(file("${var.repo_root}/config.${var.env}.yml"))
+  config         = jsondecode(file("${var.repo_root}/config.${var.env}.json"))
   lambdas        = local.config.lambdas
   signing_secret = data.aws_ssm_parameter.signing_secret.value
   bot_token      = data.aws_ssm_parameter.bot_token.value
@@ -17,6 +17,8 @@ module "lambda" {
   source = "../slack-bot-lambda"
 
   env = var.env
+
+  repo_root = var.repo_root
 
   signing_secret = local.signing_secret
   bot_token      = local.bot_token
@@ -28,18 +30,23 @@ module "sqs_dispatcher" {
 
   env = var.env
 
+  repo_root = var.repo_root
+
   signing_secret = local.signing_secret
   bot_token      = local.bot_token
   aws_endpoint   = var.aws_endpoint
 }
 
 module "event_lambdas" {
-  for_each = toset(local.lambdas)
+  for_each = { for lambda in local.lambdas : lambda.name => lambda }
 
   source = "../event-job-lambda"
 
   env  = var.env
-  name = each.key
+  name = each.value.name
+  path = each.value.path
+
+  repo_root = var.repo_root
 
   slack_bot_lambda_arn = module.lambda.lambda_arn
   signing_secret       = local.signing_secret

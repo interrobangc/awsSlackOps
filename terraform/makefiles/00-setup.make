@@ -11,7 +11,7 @@ MY_ENV := $(shell basename $(CURDIR))
 MY_RELATIVE_PATH := $(shell echo $(CURDIR) | sed -e "s|$(REPO_ROOT)||")
 
 PWD_ARG = -v $(REPO_ROOT):$(MOUNT_PATH) -w $(MOUNT_PATH)$(MY_RELATIVE_PATH)
-ENV_ARG = -e MY_ENV=$(MY_ENV) -e SSM_DB_SECRET_NAME=$(SSM_DB_SECRET_NAME) -e REPO_ROOT-$(MOUNT_PATH) -e TF_VAR_repo_root=$(MOUNT_PATH)
+ENV_ARG = -e MY_ENV=$(MY_ENV) -e SSM_DB_SECRET_NAME=$(SSM_DB_SECRET_NAME)
 NET_ARG = --network="slack-ops-aws_default"
 
 DEFAULT_ARGS = $(SECRETS) $(PWD_ARG) $(ENV_ARG) $(NET_ARG)

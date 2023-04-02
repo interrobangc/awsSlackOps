@@ -34,5 +34,14 @@
       }
     }
   ],
-  "lambdas": ["associate-vpn", "check-vpn-association"]
+  "lambdas": [
+    {
+      "name": "associate-vpn",
+      "path": "packages/custom-lambdas/associate-vpn"
+    },
+    {
+      "name": "check-vpn-association",
+      "path": "packages/custom-lambdas/check-vpn-association"
+    }
+  ]
 }

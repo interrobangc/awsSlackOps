@@ -1,6 +1,5 @@
-
-terraform {
-  source = "../../modules//slack-bot"
+locals {
+  repo_root = get_repo_root()
 }
 
 generate "provider" {
@@ -14,7 +13,6 @@ provider "aws" {
   s3_use_path_style           = true
 
   # Make it faster by skipping some things
-  skip_get_ec2_platforms      = true
   skip_metadata_api_check     = true
   skip_region_validation      = true
   skip_credentials_validation = true
@@ -51,6 +49,11 @@ EOF
 }
 
 inputs = {
-  env = "local"
+  env          = "local"
   aws_endpoint = "http://localstack:4566"
+  repo_root    = local.repo_root
+}
+
+terraform {
+  source = "${local.repo_root}//terraform/modules/slack-bot"
 }

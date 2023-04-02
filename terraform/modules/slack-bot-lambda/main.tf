@@ -68,22 +68,10 @@ module "lambda_slack_bot" {
 
   source_path = [
     {
-      path = "../../../../../../../"
+      path = "${var.repo_root}/packages/lambdas/slack-bot"
       commands = [
-        "echo 'pwd'",
-        "pwd",
-        "rm -rf /tmp/lambda-slack-bot",
-        "mkdir /tmp/lambda-slack-bot",
-        "cp package.json /tmp/lambda-slack-bot",
-        "cp package-lock.json /tmp/lambda-slack-bot",
-        "cp -r packages /tmp/lambda-slack-bot",
-        "cd /tmp/lambda-slack-bot",
-        "npm install --omit=dev -w packages/lambda/slack-bot",
-        "rm -rf node_modules/@interrobangc",
-        "mkdir dist",
-        "cp -r packages/lambda/slack-bot/* dist",
-        "cp -R node_modules dist",
-        "cd dist",
+        "cp ${var.repo_root}/config.${var.env}.json config.json",
+        "npm i --omit=dev",
         ":zip ."
       ]
     }

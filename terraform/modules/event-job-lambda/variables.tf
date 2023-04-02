@@ -8,6 +8,16 @@ variable "name" {
   type        = string
 }
 
+variable "path" {
+  description = "Path"
+  type        = string
+}
+
+variable "repo_root" {
+  description = "Root of the repository"
+  type        = string
+}
+
 variable "slack_bot_lambda_arn" {
   description = "Slack bot lambda ARN"
   type        = string
