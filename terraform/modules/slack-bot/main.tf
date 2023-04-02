@@ -13,7 +13,7 @@ locals {
   bot_token      = data.aws_ssm_parameter.bot_token.value
 }
 
-module "lambda" {
+module "slack_bot_lambda" {
   source = "../slack-bot-lambda"
 
   env = var.env
@@ -25,8 +25,8 @@ module "lambda" {
   aws_endpoint   = var.aws_endpoint
 }
 
-module "sqs_dispatcher" {
-  source = "../sqs-dispatcher"
+module "sqs_dispatcher_lambda" {
+  source = "../sqs-dispatcher-lambda"
 
   env = var.env
 
@@ -37,10 +37,10 @@ module "sqs_dispatcher" {
   aws_endpoint   = var.aws_endpoint
 }
 
-module "event_lambdas" {
+module "custom_lambdas" {
   for_each = { for lambda in local.lambdas : lambda.name => lambda }
 
-  source = "../event-job-lambda"
+  source = "../custom-lambdas"
 
   env  = var.env
   name = each.value.name
@@ -48,9 +48,9 @@ module "event_lambdas" {
 
   repo_root = var.repo_root
 
-  slack_bot_lambda_arn = module.lambda.lambda_arn
+  slack_bot_lambda_arn = module.slack_bot_lambda.lambda_arn
   signing_secret       = local.signing_secret
   bot_token            = local.bot_token
   aws_endpoint         = var.aws_endpoint
-  queue_url            = module.sqs_dispatcher.queue_url
+  queue_url            = module.sqs_dispatcher_lambda.queue_url
 }

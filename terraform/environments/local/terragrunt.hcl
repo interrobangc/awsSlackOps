@@ -55,5 +55,5 @@ inputs = {
 }
 
 terraform {
-  source = "${local.repo_root}//terraform/modules/slack-bot"
+  source = "${local.repo_root}/terraform/modules//slack-bot"
 }
