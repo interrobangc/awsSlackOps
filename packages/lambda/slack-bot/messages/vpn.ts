@@ -1,10 +1,10 @@
-const { directMention } = require('@slack/bolt');
-const { Lambda } = require('aws-sdk');
+import { directMention } from '@slack/bolt';
+import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
 
-const processedMessages = new Set();
+const processedMessages: Set<string> = new Set();
 
-const lambdaConfig = process.env.AWS_ENDPOINT ? { endpoint: process.env.AWS_ENDPOINT } : {};
-const lambda = new Lambda(lambdaConfig);
+const lambdaConfig: { endpoint?: string } = process.env.AWS_ENDPOINT ? { endpoint: process.env.AWS_ENDPOINT } : {};
+const lambdaClient = new LambdaClient(lambdaConfig);
 
 const ENV_DEV = 'development';
 const ENV_STAGE = 'staging';
@@ -17,14 +17,14 @@ const NET_PRIVATE = 'private';
 
 const nets = [NET_DB, NET_PRIVATE];
 
-const netLookup = {
+const netLookup: Record<string, string> = {
   db: NET_DB,
   database: NET_DB,
   private: NET_PRIVATE,
   priv: NET_PRIVATE,
 };
 
-const envLookup = {
+const envLookup: Record<string, string> = {
   dev: ENV_DEV,
   development: ENV_DEV,
   staging: ENV_STAGE,
@@ -37,25 +37,25 @@ const envRegex = /(stage|staging|production|prod|dev|development)/i;
 const netsRegex = /(db|database|private|priv)/i;
 const messageRegex = /vpn/i;
 
-const getEnvFromMessage = message => {
+const getEnvFromMessage = (message: string): string | null => {
   const matches = message.match(envRegex);
 
   return matches ? envLookup[matches[0]] : null;
 };
 
-const getNetsFromMessage = message => {
+const getNetsFromMessage = (message: string): Array<string> | null => {
   const matches = message.match(netsRegex);
 
   if (!matches) return null;
 
-  const nets = new Set();
+  const nets: Set<string> = new Set();
 
   matches.map(m => nets.add(netLookup[m]));
 
   return Array.from(nets);
 };
 
-const getSelectedOptions = opt => {
+const getSelectedOptions = (opt: string | string[]): any | undefined => {
   if (!opt) return;
 
   if (Array.isArray(opt)) {
@@ -65,7 +65,7 @@ const getSelectedOptions = opt => {
   return generateOption(opt);
 };
 
-const generateOption = opt => {
+const generateOption = (opt: string): any => {
   return {
     text: {
       type: 'plain_text',
@@ -75,7 +75,7 @@ const generateOption = opt => {
   };
 };
 
-const generateMessage = async ({ message, selectedEnv, selectedNets }) => {
+const generateMessage = async ({ message, selectedEnv, selectedNets }: any) => {
   console.log(getSelectedOptions(selectedNets));
   return {
     blocks: [
@@ -141,12 +141,11 @@ const generateMessage = async ({ message, selectedEnv, selectedNets }) => {
         ],
       },
     ],
-    // text: `Hey <@${message.user}>! Which VPN do you want me to associate for you?`,
     thread_ts: message.ts,
   };
 };
 
-const respondToMessage = async ({ message, say }) => {
+const respondToMessage = async ({ message, say }: any) => {
   console.dir(message);
   if (processedMessages.has(message.client_msg_id)) return;
 
@@ -160,32 +159,32 @@ const respondToMessage = async ({ message, say }) => {
   say(msg);
 };
 
-const handleVpnMessage = async app => {
+const handleVpnMessage = async (app: any) => {
   app.message(
     directMention(),
     messageRegex,
-    async ({ message, say }) => await respondToMessage({ message, say }),
+    async ({ message, say }: any) => await respondToMessage({ message, say }),
   );
 
-  app.action('env_select', async ({ ack }) => {
+  app.action('env_select', async ({ ack }: any) => {
     await ack();
   });
 
-  app.action('net_select', async ({ ack }) => {
+  app.action('net_select', async ({ ack }: any) => {
     await ack();
   });
 
-  app.action('vpn_associate', async ({ body, ack, say, value, message }) => {
+  app.action('vpn_associate', async ({ body, ack, say, value, message }: any) => {
     await ack();
 
-    await lambda
-      .invoke({
+    await lambdaClient.send(
+      new InvokeCommand({
         FunctionName: `${process.env.NODE_ENV}-slack-bot-associate-vpn`,
         InvocationType: 'Event',
         Payload: JSON.stringify({ body }),
-      })
-      .promise();
+      }),
+    );
   });
 };
 
-module.exports.handleVpnMessage = handleVpnMessage;
+export { handleVpnMessage };

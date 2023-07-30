@@ -1,8 +1,8 @@
-const { App, AwsLambdaReceiver } = require('@slack/bolt');
-const { initMessageHandlers } = require('./messages');
+import { App, AwsLambdaReceiver } from '@slack/bolt';
+import { initMessageHandlers } from './messages';
 
 const awsLambdaReceiver = new AwsLambdaReceiver({
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  signingSecret: process.env.SLACK_SIGNING_SECRET || '',
 });
 
 const app = new App({
@@ -12,7 +12,7 @@ const app = new App({
 
 initMessageHandlers(app);
 
-module.exports.handler = async (event, context, callback) => {
+export const handler = async (event: any, context: any, callback: any) => {
   const handler = await awsLambdaReceiver.start();
   return handler(event, context, callback);
 };

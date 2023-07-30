@@ -2,11 +2,9 @@
   "name": "@interrobangc/lambda-slack-bot-sqs-dispatcher",
   "version": "0.0.1",
   "description": "Lambda Slackbot sqs dispatcher",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MIT",
-  "dependencies": {
-    "aws-sdk": "^2.1225.0"
-  },
+  "dependencies": {},
   "scripts": {
     "start": "node index.js"
   }

@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  // The references must be in order. If package A is a dependency for package B, then A must be referenced before B. For more details see https://www.typescriptlang.org/docs/handbook/project-references.html
+  "references": [
+    { "path": "packages/custom-lambda/associate-vpn" },
+    { "path": "packages/custom-lambda/check-vpn-association" },
+    { "path": "packages/lambda/slack-bot" },
+    { "path": "packages/lambda/sqs-dispatcher" }
+  ]
+}

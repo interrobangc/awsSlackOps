@@ -40,11 +40,12 @@ module "sqs_dispatcher_lambda" {
 module "custom_lambdas" {
   for_each = { for lambda in local.lambdas : lambda.name => lambda }
 
-  source = "../custom-lambdas"
+  source = "../custom-lambda"
 
-  env  = var.env
-  name = each.value.name
-  path = each.value.path
+  env    = var.env
+  name   = each.value.name
+  path   = each.value.path
+  config = each.value.config
 
   repo_root = var.repo_root
 

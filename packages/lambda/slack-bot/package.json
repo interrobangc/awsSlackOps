@@ -2,11 +2,10 @@
   "name": "@interrobangc/lambda-slack-bot",
   "version": "0.0.1",
   "description": "Lambda slackbot",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.1225.0",
-    "@slack/bolt": "^3.6.0"
+    "@slack/bolt": "^3.13.2"
   },
   "scripts": {
     "start": "node index.js"

@@ -1,0 +1,13 @@
+{
+  "name": "@interrobangc/lambda-slack-bot-associate-vpn",
+  "version": "0.0.1",
+  "description": "Lambda Slackbot associate-vpn",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/bolt": "^3.13.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

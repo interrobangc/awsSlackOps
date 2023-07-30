@@ -4,7 +4,7 @@ module "lambda" {
 
   function_name = "${var.env}-slack-bot-${var.name}"
   handler       = "index.handler"
-  runtime       = "nodejs16.x"
+  runtime       = "nodejs18.x"
   publish       = true
 
   use_existing_cloudwatch_log_group = false
@@ -14,7 +14,11 @@ module "lambda" {
     {
       path = "${var.repo_root}/${var.path}"
       commands = [
+        "cp -r ${var.repo_root}/${var.path} /tmp/${var.name}",
+        "cd /tmp/${var.name}",
         "npm i --omit=dev",
+        "cp -r node_modules dist",
+        "cd dist",
         ":zip ."
       ]
     }
@@ -26,6 +30,7 @@ module "lambda" {
     SLACK_BOT_TOKEN      = var.bot_token
     SLACK_SIGNING_SECRET = var.signing_secret
     SQS_QUEUE_URL        = var.queue_url
+    CONFIG               = jsonencode(var.config)
   }
 
   allowed_triggers = {

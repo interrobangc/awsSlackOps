@@ -1,12 +1,11 @@
 {
-  "name": "@interrobangc/lambda-slack-bot-associate-vpn",
+  "name": "@interrobangc/lambda-slack-bot-types",
   "version": "0.0.1",
   "description": "Lambda Slackbot associate-vpn",
-  "main": "index.js",
+  "types": "index.ts",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.1225.0",
-    "@slack/bolt": "^3.6.0"
+    "@slack/bolt": "^3.13.2"
   },
   "scripts": {
     "start": "node index.js"

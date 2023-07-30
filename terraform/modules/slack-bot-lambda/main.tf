@@ -60,7 +60,7 @@ module "lambda_slack_bot" {
   function_name = "${var.env}-slack-bot"
   description   = "Base slack bot"
   handler       = "index.handler"
-  runtime       = "nodejs16.x"
+  runtime       = "nodejs18.x"
   publish       = true
 
   use_existing_cloudwatch_log_group = false
@@ -68,10 +68,14 @@ module "lambda_slack_bot" {
 
   source_path = [
     {
-      path = "${var.repo_root}/packages/lambdas/slack-bot"
+      path = "${var.repo_root}/packages/lambda/slack-bot"
       commands = [
         "cp ${var.repo_root}/config.${var.env}.json config.json",
+        "cp -r ${var.repo_root}/packages/lambda/slack-bot /tmp",
+        "cd /tmp/slack-bot",
         "npm i --omit=dev",
+        "cp -r node_modules dist",
+        "cd dist",
         ":zip ."
       ]
     }

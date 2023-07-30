@@ -45,3 +45,8 @@ variable "queue_url" {
   description = "SQS queue URL"
   type        = string
 }
+
+variable "config" {
+  description = "Configuration"
+  default     = {}
+}

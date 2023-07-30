@@ -3,6 +3,7 @@
     {
       "name": "vpn",
       "messageRegex": "vpn",
+      "text": "Which VPN would you like to associate?",
       "inputs": {
         "environment": {
           "type": "static_select",
@@ -37,11 +38,13 @@
   "lambdas": [
     {
       "name": "associate-vpn",
-      "path": "packages/custom-lambdas/associate-vpn"
+      "path": "packages/custom-lambda/associate-vpn",
+      "config": {}
     },
     {
       "name": "check-vpn-association",
-      "path": "packages/custom-lambdas/check-vpn-association"
+      "path": "packages/custom-lambda/check-vpn-association",
+      "config": {}
     }
   ]
 }
