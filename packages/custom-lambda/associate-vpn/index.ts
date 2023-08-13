@@ -31,6 +31,20 @@ const parseConfig = (body: any): Config => {
   return { env, nets, thread_ts, userId, channel };
 };
 
+const sendFollowUpToSqs = async (message: any, delay: number = 30 ) => {
+  console.log('sending message to sqs queue', queueUrl, message)
+
+  await sqsClient.send(
+    new SendMessageCommand({
+      DelaySeconds: 30,
+      QueueUrl: queueUrl!,
+      MessageBody: JSON.stringify(message),
+    }),
+  );
+
+  console.log(`sent sqs message to ${queueUrl}`, message);
+}
+
 const handleSuccess = async (body: any, { env, nets, thread_ts, userId, channel }: Config) => {
   let text = `<@${userId}> I'm associating the ${nets?.join(', ')} network${
     nets?.length! > 1 ? 's' : ''
@@ -53,15 +67,19 @@ const handleSuccess = async (body: any, { env, nets, thread_ts, userId, channel 
     },
   };
 
-  await sqsClient.send(
-    new SendMessageCommand({
-      DelaySeconds: 30,
-      QueueUrl: queueUrl!,
-      MessageBody: JSON.stringify(message),
-    }),
-  );
+  try {
+    await sendFollowUpToSqs(message);
+  } catch (e) {
+    console.error(e);
+    text = `<@${userId}> I'm not able to check on the status right now. Please try to connect to the VPN in a few minutes.`;
 
-  console.log(`sent sqs message to ${queueUrl}`, message);
+    await app.client.chat.postMessage({
+      channel,
+      thread_ts,
+      text,
+    });
+  }
+
 };
 
 const associateNetwork = async (body: any, config: Config) => {

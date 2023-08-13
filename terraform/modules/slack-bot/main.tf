@@ -13,6 +13,17 @@ locals {
   bot_token      = data.aws_ssm_parameter.bot_token.value
 }
 
+resource "null_resource" "transpile_lambdas" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    working_dir = var.repo_root
+    command     = "npm run build"
+  }
+}
+
 module "slack_bot_lambda" {
   source = "../slack-bot-lambda"
 
@@ -23,6 +34,8 @@ module "slack_bot_lambda" {
   signing_secret = local.signing_secret
   bot_token      = local.bot_token
   aws_endpoint   = var.aws_endpoint
+
+  depends_on = [null_resource.transpile_lambdas]
 }
 
 module "sqs_dispatcher_lambda" {
@@ -35,6 +48,8 @@ module "sqs_dispatcher_lambda" {
   signing_secret = local.signing_secret
   bot_token      = local.bot_token
   aws_endpoint   = var.aws_endpoint
+
+  depends_on = [null_resource.transpile_lambdas]
 }
 
 module "custom_lambdas" {
@@ -54,4 +69,6 @@ module "custom_lambdas" {
   bot_token            = local.bot_token
   aws_endpoint         = var.aws_endpoint
   queue_url            = module.sqs_dispatcher_lambda.queue_url
+
+  depends_on = [null_resource.transpile_lambdas]
 }
